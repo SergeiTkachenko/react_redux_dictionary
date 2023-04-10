@@ -1,7 +1,7 @@
-import { Checkbox, FormControlLabel } from '@mui/material';
+import { Button, Checkbox, FormControlLabel } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchWords } from 'redux/operations';
+import { deleteWord, fetchWords, checkWord } from 'redux/operations';
 import { selectWords } from 'redux/selectors';
 
 export function WordsList() {
@@ -15,14 +15,30 @@ export function WordsList() {
     return () => controller.abort();
   }, [dispatch]);
 
+  const sortedWords = words
+    .slice()
+    .sort((a, b) => a.ukrWord.localeCompare(b.ukrWord));
+
   return (
     <ul>
-      {words.map(word => (
+      {sortedWords.map((word, index) => (
         <li key={word.id}>
           <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label="Label"
+            control={
+              <Checkbox
+                onChange={e =>
+                  dispatch(checkWord({ ...word, isChecked: e.target.checked }))
+                }
+                checked={word.isChecked}
+              />
+            }
           />
+          <span>&#8470; {index + 1} </span>
+          <span>{word.ukrWord} &#129046; </span>
+          <span>{word.engWord}</span>
+          <Button type="button" onClick={() => dispatch(deleteWord(word.id))}>
+            Delete &#10007;
+          </Button>
         </li>
       ))}
     </ul>

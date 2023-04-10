@@ -1,9 +1,14 @@
+import { WordForm } from './WordForm/WordForm';
 import { WordsList } from './WordsList/WordsList';
+import { Container } from './style/Container';
+import { GlobalStyle } from './style/GlobalStyle';
 
-export const App = () => {
+export default function App() {
   return (
-    <div>
+    <Container>
+      <WordForm />
       <WordsList />
-    </div>
+      <GlobalStyle />
+    </Container>
   );
-};
+}
